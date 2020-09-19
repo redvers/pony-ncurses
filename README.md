@@ -3,7 +3,21 @@ pony-ncurses
 
 Ponylang wrapper for ncurses.
 
-_insert example code here_
+
+Hello World!
+============
+
+```
+use "pony-ncurses"
+
+actor Main
+  new create(env: Env) =>
+    let window: Curses = Curses
+    window.waddstr("Hello World\n")
+    window.refresh()
+    window.getch()
+    window.endwin()
+```
 
 
 Implemented:
