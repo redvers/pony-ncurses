@@ -22,6 +22,11 @@ actor Main
 A more complex example:
 =======================
 
+This example produces an 80x24 frame with an infinitely running ball that bounces within it.
+
+To run the example, copy the code into main.pony at the same directory level as this README.md and compile as normal.
+
+
 ```
 use "time"
 use "pony-ncurses"
