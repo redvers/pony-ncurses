@@ -19,6 +19,128 @@ actor Main
     window.endwin()
 ```
 
+A more complex example:
+=======================
+
+```
+use "time"
+use "pony-ncurses"
+
+actor Main
+  new create(env: Env) =>
+/*
+      Windows are stacked as displayed
+      below.  Each window has its own
+      x and y coordinates system.
+
+      +---------stdscr (window)---------+
+      |  +--------(gameframe)--------+  +
+      |  |  +------(gamearea)-----+  |  |
+      |  |  |                     |  |  |
+      |  |  |                     |  |  |
+      |  |  |                     |  |  |
+      |  |  |                     |  |  |
+      |  |  |                     |  |  |
+      |  |  +---------------------+  |  |
+      |  +---------------------------+  +
+      +---------------------------------+
+*/
+
+    // Create our three windows window
+    let window: Curses = Curses
+    let gameframe: Curses = Curses.newwin(24, 80, 0, 0)
+    let gamearea: Curses = Curses.newwin(22, 78, 1, 1)
+
+
+    // Use timers because pony believes sleep(3) is for the weak.
+    let timers = Timers
+    let timer = Timer(GameTick(window, gameframe, gamearea), 5, 50_000_000)
+    timers(consume timer)
+
+
+/* 
+    This class contains the "mainloop" of the demo.
+    apply() is called every time the timer ticks.
+*/
+class GameTick is TimerNotify
+  let _ball: Ball
+  let _window: Curses
+  let _gameframe: Curses
+  let _gamearea: Curses
+
+  // constructor creates a ball and stores the window objects
+  // so they can be used to render.
+  new iso create(window: Curses, gameframe: Curses, gamearea: Curses) =>
+    _ball = Ball(gamearea)
+    _window = window
+    _gameframe = gameframe
+    _gamearea = gamearea
+
+  fun ref apply(timer: Timer, count: U64): Bool =>
+    _ball.moveball()
+    _ball.renderball()
+    _window.refresh()
+    _gameframe.wborder(0,0,0,0,0,0,0,0)
+    _gameframe.wrefresh()
+    _gamearea.wrefresh()
+    true
+
+
+class Ball
+  var _x: I32
+  var _y: I32
+  var _upward: Bool
+  var _rightward: Bool
+  let _window: Curses
+
+  let ponystring: String = "O"
+
+  new create(window: Curses) =>
+    _x = I32(10)
+    _y = I32(10)
+    _upward = false
+    _rightward = false
+    _window = window
+
+
+  fun renderball(): None =>
+    /* mvwaddstr moves the cursor to y,x and displays the
+       string "O" - the ball)                          */
+    _window.mvwaddstr(_y, _x, ponystring)
+
+
+  fun ref moveball(): None =>
+    /* mvwaddstr moves the cursor to y,x and blanks out
+       that location before updating the coordinates */
+    _window.mvwaddstr(_y, _x, " ")
+
+    if (_upward) then
+      _y = _y - 1
+    else
+      _y = _y + 1
+    end
+
+    if (_rightward) then
+      _x = _x + 1
+    else
+      _x = _x - 1
+    end
+
+    if (_x == 0) then
+      _rightward = true
+    end
+    if (_x == 78) then
+      _rightward = false
+    end
+
+    if (_y == 0) then
+      _upward = false
+    end
+    if (_y == 22) then
+      _upward = true
+    end
+
+```
 
 Implemented:
 ===========
@@ -35,9 +157,9 @@ curs_border(3X)
 
 ```
 
-```
 To be continued:
 ================
+```
 curs_addchstr(3X)
 curs_add_wch(3X)
 curs_add_wchstr(3X)

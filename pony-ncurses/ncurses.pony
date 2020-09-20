@@ -98,8 +98,8 @@ class val Curses
 
 // curs_border(3X)
 // create curses borders, horizontal, and vertical lines
-  fun val border( ls: I32, rs: I32, ts: I32, bs: I32, tl: I32, tr: I32, bl: I32, br: I32): I32 => @border[I32](          ls, rs, ts, bs, tl, tr, bl, br)
-  fun val wborder(ls: I32, rs: I32, ts: I32, bs: I32, tl: I32, tr: I32, bl: I32, br: I32): I32 => @wborder[I32](_screen, ls, rs, ts, bs, tl, tr, bl, br)
+  fun border( ls: I32, rs: I32, ts: I32, bs: I32, tl: I32, tr: I32, bl: I32, br: I32): I32 => @border[I32](          ls, rs, ts, bs, tl, tr, bl, br)
+  fun wborder(ls: I32, rs: I32, ts: I32, bs: I32, tl: I32, tr: I32, bl: I32, br: I32): I32 => @wborder[I32](_screen, ls, rs, ts, bs, tl, tr, bl, br)
 
   fun hline(                   ch: I32, n: I32): I32                                           => @hline[I32](                ch, n)
   fun whline(                  ch: I32, n: I32): I32                                           => @whline[I32](_screen,       ch, n)
