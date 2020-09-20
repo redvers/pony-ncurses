@@ -7,7 +7,7 @@ Ponylang wrapper for ncurses.
 Hello World!
 ============
 
-```
+```pony
 use "pony-ncurses"
 
 actor Main
@@ -27,7 +27,7 @@ This example produces an 80x24 frame with an infinitely running ball that bounce
 To run the example, copy the code into main.pony at the same directory level as this README.md and compile as normal.
 
 
-```
+```pony
 use "time"
 use "pony-ncurses"
 
