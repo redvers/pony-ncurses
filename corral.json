@@ -1,0 +1,7 @@
+{
+  "deps": [],
+  "info": {
+    "description": "Library for wrapping the C-FFI for ncurses",
+    "name": "pony-ncurses"
+  }
+}
